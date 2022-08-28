@@ -6,6 +6,8 @@ class Account(Session):
     def __init__(self):
         Session.__init__(self)
 
+        self.email = None
+
         self.headers.update({
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36',
         })
@@ -24,3 +26,18 @@ class Account(Session):
         })
 
         email = self.get('https://tempmailo.com/changemail', timeout=5).text
+
+        self.email = email
+
+    def get_email_inbox(self):
+        url = 'https://tempmailo.com/'
+
+        payload = {
+            'mail': self.email
+        }
+
+        print(self.cookies)
+
+        inbox = self.post(url, data=payload, timeout=5)
+
+        print(inbox)
