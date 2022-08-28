@@ -14,4 +14,13 @@ class Account(Session):
         page = self.get('https://tempmailo.com/', timeout=5)
         soup = BeautifulSoup(page.content, 'html.parser')
 
-        print(soup)
+        request_verification_token = soup.find('input', {'name': '__RequestVerificationToken'})['value']
+
+        if not request_verification_token:
+            return None
+
+        self.headers.update({
+            'requestverificationtoken': f'{request_verification_token}'
+        })
+
+        email = self.get('https://tempmailo.com/changemail', timeout=5).text
