@@ -1,6 +1,7 @@
 from requests import Session
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox, FirefoxProfile
+from selenium.webdriver.common.by import By
 
 
 class Account(Session):
@@ -26,10 +27,6 @@ class Account(Session):
             'requestverificationtoken': f'{request_verification_token}'
         })
 
-        email = soup.find('input', {'id': 'i-email'})
-
-        self.email = email
-
     def get_email_inbox(self):
         url = 'https://tempmailo.com/'
 
@@ -46,6 +43,10 @@ class Account(Session):
         driver = Firefox(firefox_profile=firefox_profile)
 
         driver.get('https://tempmailo.com')
+
+        self.email = driver.find_element(By.ID, 'i-email')
+
+        print(self.email)
 
         page_source = driver.page_source
 
