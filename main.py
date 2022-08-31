@@ -1,6 +1,8 @@
 from account import Account
 
 
-account = Account()
-account.get_email_address()
-# account.get_email_inbox()
+account = Account(('tester434_', ))
+account.set_domain()
+
+if account.create_email() == 1:
+    account.set_token()
