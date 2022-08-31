@@ -42,5 +42,13 @@ class MailGW(Session):
 
         res = self.post('https://api.mail.gw/token', json=payload, timeout=5).json()
 
-        self.email_token = res['token']
+        self.headers.update({
+            'Authorization': f"Bearer {res['token']}"
+        })
+
         self.email_id = res['id']
+
+    def get_messages(self):
+        res = self.get(f'https://api.mail.gw/messages?id={self.email_id}', timeout=5).json()
+
+        print(res)
