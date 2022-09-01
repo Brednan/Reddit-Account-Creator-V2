@@ -24,5 +24,5 @@ class AccountCreator:
             account.set_token()
 
             if account.enter_email() == 200:
-                account.enter_user_and_password()
+                account.submit_register_req()
 
