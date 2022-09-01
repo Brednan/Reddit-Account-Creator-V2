@@ -2,6 +2,7 @@ from mail_gw_api_wrapper import MailGW
 from bs4 import BeautifulSoup
 from twocaptcha import TwoCaptcha
 import os
+import json
 
 
 class Account(MailGW):
@@ -56,4 +57,24 @@ class Account(MailGW):
 
         res = self.post('https://www.reddit.com/register', timeout=5, data=payload)
 
-        print(res.json())
+        if res.status_code == 200:
+            home_page = self.get('https://www.reddit.com/', timeout=5).content
+
+            soup = BeautifulSoup(home_page, 'html.parser')
+
+            script = soup.find('script', {'id': 'data'}).text
+
+            script_json_raw = script[14: len(script) - 1]
+
+            script_json = json.loads(script_json_raw)
+
+            access_token = script_json['user']['session']['accessToken']
+
+            self.headers.update({
+                'Authorization': f'Bearer {access_token}'
+            })
+
+            return 1
+
+        else:
+            return 0

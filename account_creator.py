@@ -24,4 +24,11 @@ class AccountCreator:
             account.set_token()
 
             if account.enter_email() == 200:
-                account.submit_register_req()
+                register_status = account.submit_register_req()
+
+                # if register_status == 1:
+                #     account.headers.update({
+                #         'Authorization': f'Bearer {account.email_token}'
+                #     })
+                #
+                #     account.get_messages()
