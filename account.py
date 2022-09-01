@@ -8,8 +8,6 @@ class Account(MailGW, TwoCaptcha):
     def __init__(self, username):
         MailGW.__init__(self, username)
 
-        self.username = username
-
         TwoCaptcha.__init__(self, os.environ.get('2captcha_key'))
 
         self.site_key = '6LeTnxkTAAAAAN9QEuDZRpn90WwKk_R1TRW_g-JC'
@@ -43,7 +41,15 @@ class Account(MailGW, TwoCaptcha):
         return res
 
     def enter_user_and_password(self):
+        g_recaptcha_response = self.recaptcha(sitekey='6LeTnxkTAAAAAN9QEuDZRpn90WwKk_R1TRW_g-JC', url='https://www.reddit.com/register')
+
         payload = {
             'csrf_token': self.csrf_token,
+            'g-recaptcha-response': g_recaptcha_response,
+            'password': self.password,
             'dest': 'https://www.reddit.com',
+            'email_permission': False,
+            'lang': 'en',
+            'username': self.username,
+            'email': self.email
         }

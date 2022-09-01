@@ -7,6 +7,7 @@ class MailGW(Session):
         Session.__init__(self)
 
         self.username = username
+        self.password = 'Password_1264'
 
         self.email = None
         self.email_token = None
@@ -23,7 +24,7 @@ class MailGW(Session):
     def create_email(self):
         payload = {
             'address': f'{self.username}@{self.email_domain}',
-            'password': 'Password_1264'
+            'password': self.password
         }
 
         res = self.post('https://api.mail.gw/accounts', timeout=5, json=payload)
@@ -38,7 +39,7 @@ class MailGW(Session):
     def set_token(self):
         payload = {
             'address': self.email,
-            'password': 'Password_1264'
+            'password': self.password
         }
 
         res = self.post('https://api.mail.gw/token', json=payload, timeout=5).json()
