@@ -45,7 +45,7 @@ class Account(MailGW):
 
         payload = {
             'csrf_token': self.csrf_token,
-            'g-recaptcha-response': g_recaptcha_response,
+            'g-recaptcha-response': g_recaptcha_response['code'],
             'password': self.password,
             'dest': 'https://www.reddit.com',
             'email_permission': False,
@@ -55,4 +55,5 @@ class Account(MailGW):
         }
 
         res = self.post('https://www.reddit.com/register', timeout=5, data=payload)
-        print(res.content)
+
+        print(res.json())
