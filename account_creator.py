@@ -12,4 +12,17 @@ class AccountCreator:
         res = requests.get('https://www.reddit.com/api/v1/generate_username.json', timeout=5, headers=headers).json()
 
         username = res['usernames'][0]
-        print(username)
+
+        return username
+
+    def create_account(self):
+        account = Account(self.generate_username().lower())
+
+        account.set_domain()
+
+        if account.create_email() == 1:
+            account.set_token()
+
+            if account.enter_email() == 200:
+                account.enter_user_and_password()
+

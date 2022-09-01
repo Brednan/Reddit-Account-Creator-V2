@@ -29,6 +29,7 @@ class MailGW(Session):
         res = self.post('https://api.mail.gw/accounts', timeout=5, json=payload)
 
         if 200 <= res.status_code <= 204:
+            self.email = f'{self.username}@{self.email_domain}'
             return 1
 
         else:
@@ -36,14 +37,16 @@ class MailGW(Session):
 
     def set_token(self):
         payload = {
-            'address': f'{self.username}@{self.email_domain}',
+            'address': self.email,
             'password': 'Password_1264'
         }
 
         res = self.post('https://api.mail.gw/token', json=payload, timeout=5).json()
 
+        self.email_token = res['token']
+
         self.headers.update({
-            'Authorization': f"Bearer {res['token']}"
+            'Authorization': f"Bearer {self.email_token}"
         })
 
         self.email_id = res['id']

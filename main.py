@@ -1,5 +1,5 @@
 from account_creator import AccountCreator
 
 
-account = AccountCreator()
-account.generate_username()
+account_creator = AccountCreator()
+account_creator.create_account()
