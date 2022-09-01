@@ -40,7 +40,7 @@ class Account(MailGW, TwoCaptcha):
 
         return res
 
-    def enter_user_and_password(self):
+    def submit_register_req(self):
         g_recaptcha_response = self.recaptcha(sitekey='6LeTnxkTAAAAAN9QEuDZRpn90WwKk_R1TRW_g-JC', url='https://www.reddit.com/register')
 
         payload = {
@@ -53,3 +53,6 @@ class Account(MailGW, TwoCaptcha):
             'username': self.username,
             'email': self.email
         }
+
+        res = self.post('https://www.reddit.com/register', timeout=5, data=payload)
+        print(res)
