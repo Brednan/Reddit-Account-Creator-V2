@@ -1,9 +1,5 @@
-from account import Account
+from account_creator import AccountCreator
 
 
-account = Account(('tester4_', ))
-account.set_domain()
-
-if account.create_email() == 1:
-    account.set_token()
-    account.get_messages()
+account = AccountCreator()
+account.generate_username()

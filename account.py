@@ -1,12 +1,16 @@
 from mail_gw_api_wrapper import MailGW
 from bs4 import BeautifulSoup
-from selenium.webdriver import Firefox, FirefoxProfile
-from selenium.webdriver.common.by import By
+from twocaptcha import TwoCaptcha
+import os
 
 
-class Account(MailGW):
-    def __init__(self, credentials):
-        MailGW.__init__(self, credentials[0])
+class Account(MailGW, TwoCaptcha):
+    def __init__(self, username):
+        MailGW.__init__(self, username)
+
+        TwoCaptcha.__init__(self, os.environ.get('2captcha_key'))
+
+        self.site_key = '6LeTnxkTAAAAAN9QEuDZRpn90WwKk_R1TRW_g-JC'
 
         self.email = None
 
