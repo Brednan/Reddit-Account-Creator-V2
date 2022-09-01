@@ -25,4 +25,3 @@ class AccountCreator:
 
             if account.enter_email() == 200:
                 account.submit_register_req()
-
