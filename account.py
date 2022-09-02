@@ -58,22 +58,38 @@ class Account(MailGW):
         res = self.post('https://www.reddit.com/register', timeout=5, data=payload)
 
         if res.status_code == 200:
-            home_page = self.get('https://www.reddit.com/', timeout=5).content
+            if self.verify_email() == 1:
 
-            soup = BeautifulSoup(home_page, 'html.parser')
+                return 1
 
-            script = soup.find('script', {'id': 'data'}).text
+            else:
+                return 0
 
-            script_json_raw = script[14: len(script) - 1]
+        else:
+            return 0
 
-            script_json = json.loads(script_json_raw)
+    def verify_email(self):
+        home_page = self.get('https://www.reddit.com/', timeout=5).content
 
-            access_token = script_json['user']['session']['accessToken']
+        soup = BeautifulSoup(home_page, 'html.parser')
 
-            self.headers.update({
-                'Authorization': f'Bearer {access_token}'
-            })
+        script = soup.find('script', {'id': 'data'}).text
 
+        script_json_raw = script[14: len(script) - 1]
+
+        script_json = json.loads(script_json_raw)
+
+        access_token = script_json['user']['session']['accessToken']
+
+        self.headers.update({
+            'Authorization': f'Bearer {access_token}'
+        })
+
+        email_verify = self.get(
+            'https://oauth.reddit.com/api/send_verification_email?source=tooltip&raw_json=1&gilding_detail=1',
+            timeout=5).json()
+
+        if email_verify['success']:
             return 1
 
         else:

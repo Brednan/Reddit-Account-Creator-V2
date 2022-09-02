@@ -52,7 +52,15 @@ class MailGW(Session):
 
         self.email_id = res['id']
 
-    def get_messages(self):
-        res = self.get(f'https://api.mail.gw/messages?id={self.email_id}', timeout=5).json()
+    def get_message_id(self, index):
+        messages_req = self.get(f'https://api.mail.gw/messages?id={self.email_id}', timeout=5).json()
 
-        print(res)
+        msg_id = messages_req['hydra:member'][index]['id']
+
+        return msg_id
+
+    def get_message(self, msg_id):
+        message_raw = self.get(f'https://api.mail.gw/messages/{msg_id}', timeout=5).json()
+
+        message = message_raw['text']
+        return message

@@ -26,9 +26,19 @@ class AccountCreator:
             if account.enter_email() == 200:
                 register_status = account.submit_register_req()
 
-                # if register_status == 1:
-                #     account.headers.update({
-                #         'Authorization': f'Bearer {account.email_token}'
-                #     })
-                #
-                #     account.get_messages()
+                if register_status == 1:
+                    account.headers.update({
+                        'Authorization': f'Bearer {account.email_token}'
+                    })
+
+                    msg_id = account.get_message_id(0)
+
+                    message = account.get_message(msg_id)
+
+                    link_beginning_index = message.find('https://www.reddit.com/verification')
+
+                    link_ending_index = message.find(']', link_beginning_index)
+
+                    verify_link = message[link_beginning_index: link_ending_index]
+
+                    print(verify_link)
