@@ -55,19 +55,21 @@ class AccountCreator:
                     success = account.verify_email(verify_link)
 
                     if success == 1:
-                        print(f'Account {i}: Success!')
+                        print(f'Account {i + 1}: Success!')
+
+                        self.save_account(account.username, account.password)
 
                     else:
-                        print(f'Account {i}: Failed!')
+                        print(f'Account {i + 1}: Failed!')
 
                 else:
-                    print(f'Account {i}: Failed!')
+                    print(f'Account {i + 1}: Failed!')
 
             else:
-                print(f'Account {i}: Failed!')
+                print(f'Account {i + 1}: Failed!')
 
         else:
-            print(f'Account {i}: Failed!')
+            print(f'Account {i + 1}: Failed!')
 
     @staticmethod
     def save_account(username, password):

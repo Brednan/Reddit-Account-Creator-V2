@@ -10,6 +10,11 @@ class Account(MailGW):
     def __init__(self, username):
         MailGW.__init__(self, username)
 
+        self.proxies = {
+            'http': f'http://{os.environ.get("ip_royal_username")}:{os.environ.get("ip_royal_password")}_country-us@geo.iproyal.com:22323',
+            'https': f'http://{os.environ.get("ip_royal_username")}:{os.environ.get("ip_royal_password")}_country-us@geo.iproyal.com:22323'
+        }
+
         self.two_captcha = TwoCaptcha(os.environ.get('2captcha_key'))
 
         self.site_key = '6LeTnxkTAAAAAN9QEuDZRpn90WwKk_R1TRW_g-JC'
