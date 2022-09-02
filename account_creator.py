@@ -41,4 +41,4 @@ class AccountCreator:
 
                     verify_link = message[link_beginning_index: link_ending_index]
 
-                    print(verify_link)
+                    account.verify_email(verify_link)
