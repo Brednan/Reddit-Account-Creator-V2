@@ -3,6 +3,9 @@ import requests
 
 
 class AccountCreator:
+    def __init__(self, amount):
+        self.amount = amount
+
     @staticmethod
     def generate_username():
         headers = {
@@ -14,6 +17,14 @@ class AccountCreator:
         username = res['usernames'][0]
 
         return username
+
+    def create_accounts(self):
+        i = 0
+
+        while i < self.amount:
+            self.create_account(i)
+
+            i += 1
 
     def create_account(self, i: int):
         account = Account(self.generate_username().lower())
@@ -49,8 +60,17 @@ class AccountCreator:
                     else:
                         print(f'Account {i}: Failed!')
 
+                else:
+                    print(f'Account {i}: Failed!')
+
             else:
                 print(f'Account {i}: Failed!')
 
         else:
             print(f'Account {i}: Failed!')
+
+    @staticmethod
+    def save_account(username, password):
+        f = open('./output.txt', 'a', encoding='utf-8')
+        f.write(f'{username}:{password}\n')
+        f.close()
