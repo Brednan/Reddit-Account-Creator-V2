@@ -15,7 +15,7 @@ class AccountCreator:
 
         return username
 
-    def create_account(self):
+    def create_account(self, i: int):
         account = Account(self.generate_username().lower())
 
         account.set_domain()
@@ -41,4 +41,16 @@ class AccountCreator:
 
                     verify_link = message[link_beginning_index: link_ending_index]
 
-                    account.verify_email(verify_link)
+                    success = account.verify_email(verify_link)
+
+                    if success == 1:
+                        print(f'Account {i}: Success!')
+
+                    else:
+                        print(f'Account {i}: Failed!')
+
+            else:
+                print(f'Account {i}: Failed!')
+
+        else:
+            print(f'Account {i}: Failed!')

@@ -110,10 +110,10 @@ class Account(MailGW):
 
         verification_url = self.get_verification_url(link)
 
-        res = self.post(verification_url, timeout=5).json()
+        res = self.post(verification_url, timeout=5, data=form_data).json()
 
         if res['success']:
-            print(f'{self.username}:{self.password}')
+            return 1
 
     @staticmethod
     def get_verification_url(url):
@@ -127,4 +127,5 @@ class Account(MailGW):
         ref_campaign = queries['ref_campaign'][0]
 
         verify_url = f'https://www.reddit.com/api/v1/verify_email/{param}.json?correlation_id={correlation_id}&ref_campaign={ref_campaign}'
+
         return verify_url

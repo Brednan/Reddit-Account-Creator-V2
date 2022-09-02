@@ -63,4 +63,5 @@ class MailGW(Session):
         message_raw = self.get(f'https://api.mail.gw/messages/{msg_id}', timeout=5).json()
 
         message = message_raw['text']
+
         return message
