@@ -27,37 +27,41 @@ class AccountCreator:
             i += 1
 
     def create_account(self, i: int):
-        account = Account(self.generate_username().lower())
+        try:
+            account = Account(self.generate_username().lower())
 
-        account.set_domain()
+            account.set_domain()
 
-        if account.create_email() == 1:
-            account.set_token()
+            if account.create_email() == 1:
+                account.set_token()
 
-            if account.enter_email() == 200:
-                register_status = account.submit_register_req()
+                if account.enter_email() == 200:
+                    register_status = account.submit_register_req()
 
-                if register_status == 1:
-                    account.headers.update({
-                        'Authorization': f'Bearer {account.email_token}'
-                    })
+                    if register_status == 1:
+                        account.headers.update({
+                            'Authorization': f'Bearer {account.email_token}'
+                        })
 
-                    msg_id = account.get_message_id(0)
+                        msg_id = account.get_message_id(0)
 
-                    message = account.get_message(msg_id)
+                        message = account.get_message(msg_id)
 
-                    link_beginning_index = message.find('https://www.reddit.com/verification')
+                        link_beginning_index = message.find('https://www.reddit.com/verification')
 
-                    link_ending_index = message.find(']', link_beginning_index)
+                        link_ending_index = message.find(']', link_beginning_index)
 
-                    verify_link = message[link_beginning_index: link_ending_index]
+                        verify_link = message[link_beginning_index: link_ending_index]
 
-                    success = account.verify_email(verify_link)
+                        success = account.verify_email(verify_link)
 
-                    if success == 1:
-                        print(f'Account {i + 1}: Success!')
+                        if success == 1:
+                            print(f'Account {i + 1}: Success!')
 
-                        self.save_account(account.username, account.password)
+                            self.save_account(account.username, account.password)
+
+                        else:
+                            print(f'Account {i + 1}: Failed!')
 
                     else:
                         print(f'Account {i + 1}: Failed!')
@@ -68,7 +72,7 @@ class AccountCreator:
             else:
                 print(f'Account {i + 1}: Failed!')
 
-        else:
+        except requests.exceptions.ProxyError:
             print(f'Account {i + 1}: Failed!')
 
     @staticmethod
