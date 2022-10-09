@@ -1,3 +1,5 @@
 /env/
 .idea
 test.json
+output.txt
+__pycache__
